@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Talkmania{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/">Inicio</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'historial_reservas' %}">Mis Reservas</a>
+                {% if user.rol == 'administrador' %}
+                    <a href="{% url 'administrar_usuarios' %}">Admin Usuarios</a>
+                    <a href="{% url 'verificar_qr' %}">Verificar QR</a>
+                {% endif %}
+                <a href="{% url 'logout' %}">Cerrar Sesión ({{ user.username }})</a>
+            {% else %}
+                <a href="{% url 'login' %}">Iniciar Sesión</a>
+                <a href="{% url 'registro' %}">Registrarse</a>
+            {% endif %}
+        </nav>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h1>{% block header %}Talkmania{% endblock %}</h1>
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

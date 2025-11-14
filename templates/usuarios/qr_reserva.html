@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Código QR{% endblock %}
+
+{% block header %}Código QR de Reserva{% endblock %}
+
+{% block content %}
+<div class="qr-container">
+    <img src="data:image/png;base64,{{ qr }}" alt="QR Code">
+    <p class="mt-20">Muestra este código al ingresar al evento</p>
+</div>
+{% endblock %}

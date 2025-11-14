@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Verificar QR{% endblock %}
+
+{% block header %}Verificar Código QR{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <label for="codigo">Escanea o ingresa el código QR:</label>
+    <input type="text" name="codigo" id="codigo" placeholder="RESERVA-123-45" required>
+    <button type="submit">Verificar</button>
+</form>
+{% endblock %}

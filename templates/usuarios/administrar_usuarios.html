@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Administrar Usuarios{% endblock %}
+
+{% block header %}Administración de Usuarios{% endblock %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario.username }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.rol }}</td>
+            <td>
+                {% if usuario.bloqueado %}
+                    <span style="color: red;">Bloqueado</span>
+                {% else %}
+                    <span style="color: green;">Activo</span>
+                {% endif %}
+            </td>
+            <td>
+                <form method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ usuario.id }}">
+                    <input type="hidden" name="accion" value="bloquear">
+                    <button type="submit">
+                        {% if usuario.bloqueado %}Desbloquear{% else %}Bloquear{% endif %}
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
