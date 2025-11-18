@@ -14,7 +14,6 @@ from .forms import RegistroForm, LoginForm, ReviewForm
 from .models import User, Review
 from talkmaniaApp.models import Reserva, Cliente
 import qrcode
-from io import BytesIO
 import base64
 
 # Página de inicio (landing)
