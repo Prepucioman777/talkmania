@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talkmania - Bienvenido</title>
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+</head>
+<body>
+    <div class="landing-container">
+        <header class="hero">
+            <h1>🎤 Talkmania</h1>
+            <p class="tagline">Sistema de Gestión de Reservas y Eventos</p>
+        </header>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3>📅 Gestión de Reservas</h3>
+                <p>Administra tus reservas de manera fácil y rápida</p>
+            </div>
+            <div class="feature-card">
+                <h3>⭐ Sistema de Reseñas</h3>
+                <p>Comparte tu experiencia y lee opiniones</p>
+            </div>
+            <div class="feature-card">
+                <h3>📱 Códigos QR</h3>
+                <p>Acceso rápido con verificación QR</p>
+            </div>
+        </div>
+
+        <div class="cta-buttons">
+            <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a>
+            <a href="{% url 'registro' %}" class="btn btn-secondary">Registrarse</a>
+        </div>
+    </div>
+</body>
+</html>
