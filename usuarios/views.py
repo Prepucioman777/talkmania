@@ -6,17 +6,14 @@ from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
-<<<<<<< HEAD
 from .forms import RegistroForm, LoginForm  # , ReviewForm  
 from .models import User  # , Review  
 # import qrcode
-=======
 from django.utils import timezone
 from .forms import RegistroForm, LoginForm, ReviewForm
 from .models import User, Review
 from talkmaniaApp.models import Reserva, Cliente
 import qrcode
->>>>>>> b10b5ca87f3cf764edde49863975e9400bb4901a
 from io import BytesIO
 import base64
 
