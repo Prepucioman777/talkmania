@@ -1,10 +1,59 @@
 {% extends 'base.html' %}
-{% block title %}Inicio{% endblock %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block header %}Dashboard - Bienvenido {{ user.username }}{% endblock %}
+
 {% block content %}
-<h2>Bienvenido a Talkmania</h2>
-{% if user.is_authenticated %}
-<p>Hola, {{ user.usuario }} 👋</p>
-{% else %}
-<p>Inicia sesión o regístrate para comenzar.</p>
-{% endif %}
+<div class="dashboard">
+    <div class="card">
+        <h2>👤 Tu Perfil</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+            <div>
+                <strong>Usuario:</strong><br>
+                {{ user.username }}
+            </div>
+            <div>
+                <strong>Email:</strong><br>
+                {{ user.email }}
+            </div>
+            <div>
+                <strong>Rol:</strong><br>
+                <span style="background: #667eea; color: white; padding: 5px 10px; border-radius: 5px;">
+                    {{ user.get_rol_display }}
+                </span>
+            </div>
+            <div>
+                <strong>Teléfono:</strong><br>
+                {{ user.telefono|default:"No registrado" }}
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-20">
+        <h2>⚡ Acciones Rápidas</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+            <a href="{% url 'historial_reservas' %}" class="btn">📋 Mis Reservas</a>
+            
+            {% if user.rol == 'administrador' %}
+                <a href="{% url 'administrar_usuarios' %}" class="btn">👥 Administrar Usuarios</a>
+                <a href="{% url 'verificar_qr' %}" class="btn">📱 Verificar QR</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mt-20">
+        <h2>📊 Tus Estadísticas</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-top: 20px;">
+            <div style="text-align: center; padding: 20px; background: #667eea; color: white; border-radius: 10px;">
+                <h3 style="margin: 0; font-size: 2.5rem; color: white;">{{ total_reservas }}</h3>
+                <p style="margin: 5px 0 0 0;">Reservas Totales</p>
+            </div>
+            <div style="text-align: center; padding: 20px; background: #28a745; color: white; border-radius: 10px;">
+                <h3 style="margin: 0; font-size: 2.5rem; color: white;">{{ total_reviews }}</h3>
+                <p style="margin: 5px 0 0 0;">Reseñas Escritas</p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

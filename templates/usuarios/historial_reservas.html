@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Mis Reservas{% endblock %}
+
+{% block header %}Historial de Reservas{% endblock %}
+
+{% block content %}
+
+{% if sin_perfil %}
+    <div class="card" style="text-align: center; padding: 40px;">
+        <h3>⚠️ Perfil Incompleto</h3>
+        <p>No tienes un perfil de cliente asociado a tu cuenta.</p>
+        <p>Por favor, contacta al administrador para completar tu registro.</p>
+        <a href="{% url 'home' %}" class="btn mt-20">Volver al Dashboard</a>
+    </div>
+{% elif reservas %}
+    {% for reserva in reservas %}
+    <div class="card">
+        <div class="card-title">
+            Reserva #{{ reserva.id }} - {{ reserva.Hotel.nombre }}
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <div>
+                <strong>📅 Fecha de Reserva:</strong><br>
+                {{ reserva.fecha_reserva }}
+            </div>
+            <div>
+                <strong>🏨 Check-in:</strong><br>
+                {{ reserva.fecha_entrada }}
+            </div>
+            <div>
+                <strong>🚪 Check-out:</strong><br>
+                {{ reserva.fecha_salida }}
+            </div>
+            <div>
+                <strong>💵 Monto:</strong><br>
+                ${{ reserva.monto }}
+            </div>
+        </div>
+        
+        <div style="margin-top: 15px;">
+            <strong>Estado:</strong> 
+            {% if reserva.estado %}
+                <span style="color: green; font-weight: bold;">✅ Completada</span>
+            {% else %}
+                <span style="color: orange; font-weight: bold;">⏳ Pendiente</span>
+            {% endif %}
+        </div>
+        
+        <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="{% url 'generar_qr' reserva.id %}" class="btn">📱 Ver Código QR</a>
+            
+            {% if reserva.estado %}
+                {% if not reserva.reviews.exists %}
+                    <a href="{% url 'crear_review' reserva.id %}" class="btn" style="background: #28a745;">⭐ Dejar Reseña</a>
+                {% else %}
+                    <span style="color: green; padding: 10px; background: #d4edda; border-radius: 5px;">
+                        ✓ Reseña publicada
+                    </span>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+        <!-- Mostrar habitaciones si existen -->
+        {% if reserva.habitaciones.exists %}
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+            <strong>🛏️ Habitaciones:</strong>
+            <ul style="margin-top: 10px;">
+                {% for res_hab in reserva.habitaciones.all %}
+                    <li>{{ res_hab.habitacion }} - ${{ res_hab.habitacion.precio }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    
+    <!-- Resumen de estadísticas -->
+    <div class="card mt-20" style="background: #f8f9fa;">
+        <h3>📊 Resumen</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-top: 15px;">
+            <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <div style="font-size: 2rem; font-weight: bold; color: #667eea;">{{ total_reservas }}</div>
+                <div style="color: #666; margin-top: 5px;">Total de Reservas</div>
+            </div>
+            <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <div style="font-size: 2rem; font-weight: bold; color: #28a745;">{{ reservas_completadas }}</div>
+                <div style="color: #666; margin-top: 5px;">Completadas</div>
+            </div>
+            <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <div style="font-size: 2rem; font-weight: bold; color: #ffc107;">{{ reservas_pendientes }}</div>
+                <div style="color: #666; margin-top: 5px;">Pendientes</div>
+            </div>
+        </div>
+    </div>
+    
+{% else %}
+    <div class="card" style="text-align: center; padding: 40px;">
+        <h3>📭 No tienes reservas</h3>
+        <p>Aún no has realizado ninguna reserva en Talkmania.</p>
+        <p>¡Explora nuestros hoteles y haz tu primera reserva!</p>
+        <a href="{% url 'home' %}" class="btn mt-20">Explorar Hoteles</a>
+    </div>
+{% endif %}
+
+{% endblock %}

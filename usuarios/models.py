@@ -1,7 +1,3 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
-from django.db import models
-from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
@@ -17,7 +13,8 @@ class User(AbstractUser):
     telefono = models.CharField(max_length=15, blank=True)
     fecha_registro = models.DateTimeField(default=timezone.now)
     bloqueado = models.BooleanField(default=False)
-
+    
+    # Agregar related_name para evitar conflictos
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='usuarios_set',
@@ -36,15 +33,16 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-# class Review(models.Model):
-#     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
-#     reserva = models.ForeignKey('reservas.Reserva', on_delete=models.CASCADE)
-#     calificacion = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
-#     comentario = models.TextField()
-#     fecha = models.DateTimeField(auto_now_add=True)
-#     
-#     class Meta:
-#         unique_together = ['usuario', 'reserva']
-#     
-#     def __str__(self):
-#         return f"Review de {self.usuario.username} - {self.calificacion}★"
+
+class Review(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
+    reserva = models.ForeignKey('talkmaniaApp.Reserva', on_delete=models.CASCADE, related_name='reviews')
+    calificacion = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    comentario = models.TextField()
+    fecha = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ['usuario', 'reserva']
+    
+    def __str__(self):
+        return f"Review de {self.usuario.username} - {self.calificacion}★"
